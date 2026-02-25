@@ -12,7 +12,7 @@
     "title": "Sorcerer's Folly",
     "category": "personal",
     "subtitle": "An arcade game inspired by Asteroids built for Ludem Dare 55.",
-    "heroImage": "https://placekitten.com/900/450",
+    "heroImage": "assets/sorcerers-folly/sorcerers-folly-logo.png",
     "file": "data/games/sorcerers-folly.json"
   },
   {

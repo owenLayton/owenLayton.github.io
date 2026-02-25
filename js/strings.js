@@ -24,10 +24,10 @@ const STRINGS = {
 
   /* ---------- About / Home Page ---------- */
   about: {
-    pageTitle: 'Owen Layton — Game Developer Portfolio',
+    pageTitle: 'Owen Layton - Software Engineeer',
     photoAlt: 'Owen Layton',
     name: 'Owen Layton',
-    tagline: 'Game Developer &amp; Creative Technologist',
+    tagline: 'Software Engineer &amp; Game Developer',
     introParagraph: 'Welcome to my portfolio! I\'m a game developer passionate about creating engaging interactive experiences. Browse my professional and personal projects, or get in touch to collaborate.',
     viewGames: 'View My Games',
     getInTouch: 'Get In Touch',
@@ -41,8 +41,8 @@ const STRINGS = {
 
     glanceTitle: 'At a Glance',
     highlights: [
-      { title: 'Engines &amp; Tools', text: 'Unreal Engine, Unity, Godot, and custom tooling' },
-      { title: 'Languages', text: 'C++, C#, Python, JavaScript, Blueprints' },
+      { title: 'Engines &amp; Tools', text: 'Unity' },
+      { title: 'Languages', text: 'C#, JavaScript, Java, C++' },
       { title: 'Disciplines', text: 'Gameplay programming, systems design, tools development, prototyping' },
       { title: 'Interests', text: 'Creative tech, procedural generation, interactive storytelling' },
     ],
