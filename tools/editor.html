@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adventure Editor</title>
+  <style>
+    /* ========================================
+       Theme & Reset
+       ======================================== */
+    :root {
+      --bg-primary: #0d0221;
+      --bg-secondary: #150535;
+      --bg-card: #1a0a3e;
+      --bg-input: #120430;
+      --text-primary: #e8e0f0;
+      --text-secondary: #f0eaf7;
+      --text-muted: #8b7fa8;
+      --accent-pink: #ff2a6d;
+      --accent-cyan: #05d9e8;
+      --accent-purple: #b537f2;
+      --accent-yellow: #f9f002;
+      --accent-green: #39ff14;
+      --accent-orange: #ff6c11;
+      --border-color: rgba(181, 55, 242, 0.3);
+      --font-primary: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-primary);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      height: 100vh;
+      display: grid;
+      grid-template-rows: 48px 1fr auto;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* ========================================
+       Toolbar
+       ======================================== */
+    #toolbar {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .toolbar-left, .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toolbar-brand {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--accent-cyan);
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    #adventure-title {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      width: 200px;
+      outline: none;
+      font-family: var(--font-primary);
+    }
+
+    #adventure-title:focus {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 8px rgba(181, 55, 242, 0.3);
+    }
+
+    .toolbar-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: var(--font-primary);
+      font-weight: 500;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .toolbar-btn:hover {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 10px rgba(181, 55, 242, 0.3);
+      background: rgba(181, 55, 242, 0.15);
+    }
+
+    .toolbar-btn.primary {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+
+    .toolbar-btn.primary:hover {
+      background: rgba(5, 217, 232, 0.15);
+      box-shadow: 0 0 10px rgba(5, 217, 232, 0.3);
+    }
+
+    .toolbar-btn.success {
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+    }
+
+    .toolbar-btn.success:hover {
+      background: rgba(57, 255, 20, 0.1);
+      box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+    }
+
+    /* ========================================
+       Main Panel (split)
+       ======================================== */
+    #main-panel {
+      display: flex;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    #graph-panel {
+      flex: 1;
+      position: relative;
+      min-width: 200px;
+      overflow: hidden;
+      background: var(--bg-primary);
+    }
+
+    #graph-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    #graph-controls {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      display: flex;
+      gap: 4px;
+    }
+
+    #graph-controls button {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    #graph-controls button:hover {
+      border-color: var(--accent-purple);
+      background: rgba(181, 55, 242, 0.15);
+    }
+
+    #panel-divider {
+      width: 5px;
+      background: var(--bg-secondary);
+      cursor: col-resize;
+      border-left: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      flex-shrink: 0;
+    }
+
+    #panel-divider:hover, #panel-divider.dragging {
+      background: var(--accent-purple);
+      opacity: 0.5;
+    }
+
+    /* ========================================
+       JSON Editor Panel
+       ======================================== */
+    #editor-panel {
+      width: 420px;
+      min-width: 200px;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-secondary);
+    }
+
+    #editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      flex-shrink: 0;
+    }
+
+    #editor-status { font-weight: 400; }
+    #editor-status.error { color: var(--accent-pink); }
+    #editor-status.valid { color: var(--accent-green); }
+
+    #editor-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #json-overlay, #json-editor {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+      tab-size: 2;
+      white-space: pre;
+      overflow: auto;
+      border: none;
+      margin: 0;
+    }
+
+    #json-overlay {
+      color: var(--text-primary);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #json-editor {
+      background: transparent;
+      color: transparent;
+      caret-color: var(--accent-cyan);
+      resize: none;
+      outline: none;
+      z-index: 2;
+      user-select: text;
+    }
+
+    /* Syntax colors */
+    .tok-key { color: var(--accent-cyan); }
+    .tok-string { color: var(--accent-pink); }
+    .tok-number { color: var(--accent-yellow); }
+    .tok-bracket { color: var(--accent-purple); }
+    .tok-bool { color: var(--accent-green); }
+    .tok-null { color: var(--text-muted); }
+
+    /* Scrollbar */
+    #json-editor::-webkit-scrollbar,
+    #json-overlay::-webkit-scrollbar { width: 8px; height: 8px; }
+    #json-editor::-webkit-scrollbar-track,
+    #json-overlay::-webkit-scrollbar-track { background: var(--bg-primary); }
+    #json-editor::-webkit-scrollbar-thumb,
+    #json-overlay::-webkit-scrollbar-thumb { background: rgba(181, 55, 242, 0.3); border-radius: 4px; }
+
+    /* ========================================
+       Validation Panel
+       ======================================== */
+    #validation-panel {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      max-height: 180px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #validation-panel.collapsed { max-height: 32px; }
+    #validation-panel.collapsed #validation-results { display: none; }
+
+    #validation-header {
+      display: flex;
+      align-items: center;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      gap: 12px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    #validation-header:hover { color: var(--text-primary); }
+
+    #validation-stats {
+      font-weight: 400;
+      margin-left: auto;
+    }
+
+    #validation-toggle {
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      font-size: 10px;
+      transition: transform 0.2s;
+    }
+
+    #validation-panel.collapsed #validation-toggle { transform: rotate(180deg); }
+
+    #validation-results {
+      overflow-y: auto;
+      padding: 4px 12px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .v-item {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border-left: 3px solid;
+    }
+
+    .v-item.error { border-color: var(--accent-pink); background: rgba(255, 42, 109, 0.08); color: var(--accent-pink); }
+    .v-item.warning { border-color: var(--accent-orange); background: rgba(255, 108, 17, 0.08); color: var(--accent-orange); }
+    .v-item.pass { border-color: var(--accent-green); background: rgba(57, 255, 20, 0.08); color: var(--accent-green); }
+    .v-item.info { border-color: var(--accent-cyan); background: rgba(5, 217, 232, 0.08); color: var(--accent-cyan); }
+  </style>
+</head>
+<body>
+  <header id="toolbar">
+    <div class="toolbar-left">
+      <span class="toolbar-brand">Adventure Editor</span>
+      <input type="text" id="adventure-title" placeholder="Adventure Title" spellcheck="false">
+    </div>
+    <div class="toolbar-right">
+      <button class="toolbar-btn" id="btn-new">New</button>
+      <button class="toolbar-btn" id="btn-load">Load</button>
+      <input type="file" id="file-input" accept=".json" hidden>
+      <button class="toolbar-btn primary" id="btn-add-node">+ Node</button>
+      <button class="toolbar-btn" id="btn-format">Format</button>
+      <button class="toolbar-btn" id="btn-validate">Validate</button>
+      <button class="toolbar-btn success" id="btn-export">Export</button>
+    </div>
+  </header>
+
+  <div id="main-panel">
+    <div id="graph-panel">
+      <canvas id="graph-canvas"></canvas>
+      <div id="graph-controls">
+        <button id="btn-zoom-in" title="Zoom in">+</button>
+        <button id="btn-zoom-out" title="Zoom out">&minus;</button>
+        <button id="btn-fit" title="Fit to content">&#9638;</button>
+      </div>
+    </div>
+    <div id="panel-divider"></div>
+    <div id="editor-panel">
+      <div id="editor-header">
+        <span>JSON Editor</span>
+        <span id="editor-status"></span>
+      </div>
+      <div id="editor-container">
+        <pre id="json-overlay" aria-hidden="true"></pre>
+        <textarea id="json-editor" spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div id="validation-panel">
+    <div id="validation-header">
+      <span>Validation</span>
+      <span id="validation-stats"></span>
+      <button id="validation-toggle">&#9650;</button>
+    </div>
+    <div id="validation-results"></div>
+  </div>
+
+  <script>
+  /* ========================================
+     Adventure Editor — All JS
+     ======================================== */
+  (function() {
+    'use strict';
+
+    /* ======================
+       AdventureModel
+       ====================== */
+    const Model = {
+      data: null,
+      positions: {},
+      selectedId: null,
+      _listeners: {},
+
+      on(evt, fn) {
+        (this._listeners[evt] = this._listeners[evt] || []).push(fn);
+      },
+
+      emit(evt, detail) {
+        (this._listeners[evt] || []).forEach(fn => fn(detail || {}));
+      },
+
+      setData(adventure, source) {
+        this.data = adventure;
+        if (source !== 'editor-silent') {
+          this.emit('change', { source });
+        }
+      },
+
+      getNode(id) {
+        if (!this.data || !this.data.nodes) return null;
+        return this.data.nodes.find(n => n.id === id) || null;
+      },
+
+      addNode() {
+        if (!this.data) return;
+        const ids = this.data.nodes.map(n => n.id);
+        const newId = ids.length > 0 ? Math.max(...ids) + 1 : 1;
+        const newNode = { id: newId, text: 'New node...', options: [] };
+        this.data.nodes.push(newNode);
+
+        // Position below the lowest existing node
+        let maxY = 0;
+        for (const id in this.positions) {
+          if (this.positions[id].y > maxY) maxY = this.positions[id].y;
+        }
+        this.positions[newId] = { x: 0, y: maxY + 150 };
+
+        this.selectedId = newId;
+        this.emit('change', { source: 'graph' });
+        this.emit('select', { nodeId: newId });
+      },
+
+      deleteNode(id) {
+        if (!this.data) return;
+        this.data.nodes = this.data.nodes.filter(n => n.id !== id);
+        // Remove references to this node from other nodes' options
+        this.data.nodes.forEach(n => {
+          n.options = n.options.filter(o => o.target !== id);
+        });
+        delete this.positions[id];
+        if (this.selectedId === id) this.selectedId = null;
+        this.emit('change', { source: 'graph' });
+      },
+
+      selectNode(id) {
+        this.selectedId = id;
+        this.emit('select', { nodeId: id });
+      },
+
+      toJSON() {
+        if (!this.data) return '{}';
+        return JSON.stringify(this.data, null, 2);
+      }
+    };
+
+    /* ======================
+       Validator
+       ====================== */
+    const Validator = {
+      validate(adventure) {
+        const errors = [];
+        const warnings = [];
+
+        if (!adventure || typeof adventure !== 'object') {
+          errors.push('Adventure data is not a valid object');
+          return { errors, warnings, stats: { totalNodes: 0, totalEndings: 0, totalConnections: 0 } };
+        }
+
+        if (!adventure.title || typeof adventure.title !== 'string') {
+          errors.push('Missing or invalid "title" (must be a non-empty string)');
+        }
+
+        if (!Array.isArray(adventure.nodes) || adventure.nodes.length === 0) {
+          errors.push('Missing or empty "nodes" array');
+          return { errors, warnings, stats: { totalNodes: 0, totalEndings: 0, totalConnections: 0 } };
+        }
+
+        const nodes = adventure.nodes;
+        const nodeIds = new Set();
+        const duplicateIds = new Set();
+        let totalConnections = 0;
+
+        // Check node fields and collect IDs
+        nodes.forEach((node, i) => {
+          if (typeof node.id !== 'number') {
+            errors.push(`Node at index ${i}: "id" must be a number`);
+          } else {
+            if (nodeIds.has(node.id)) duplicateIds.add(node.id);
+            nodeIds.add(node.id);
+          }
+          if (typeof node.text !== 'string' || node.text.trim().length === 0) {
+            errors.push(`Node ${node.id}: "text" must be a non-empty string`);
+          }
+          if (!Array.isArray(node.options)) {
+            errors.push(`Node ${node.id}: "options" must be an array`);
+          }
+        });
+
+        // Duplicate IDs
+        duplicateIds.forEach(id => {
+          errors.push(`Duplicate node ID: ${id}`);
+        });
+
+        // Check options
+        nodes.forEach(node => {
+          if (!Array.isArray(node.options)) return;
+          node.options.forEach((opt, j) => {
+            totalConnections++;
+            if (typeof opt.text !== 'string' || opt.text.trim().length === 0) {
+              errors.push(`Node ${node.id}, option ${j + 1}: "text" must be a non-empty string`);
+            }
+            if (typeof opt.target !== 'number') {
+              errors.push(`Node ${node.id}, option ${j + 1}: "target" must be a number`);
+            } else if (!nodeIds.has(opt.target)) {
+              errors.push(`Node ${node.id}, option "${opt.text || j + 1}": target ${opt.target} does not exist`);
+            }
+          });
+        });
+
+        // At least one ending
+        const endings = nodes.filter(n => Array.isArray(n.options) && n.options.length === 0);
+        if (endings.length === 0) {
+          errors.push('No ending nodes found (at least one node must have empty options)');
+        }
+
+        // Reachability (BFS from first node)
+        const startId = nodes[0].id;
+        const visited = new Set();
+        const queue = [startId];
+        while (queue.length > 0) {
+          const id = queue.shift();
+          if (visited.has(id)) continue;
+          visited.add(id);
+          const node = nodes.find(n => n.id === id);
+          if (node && Array.isArray(node.options)) {
+            node.options.forEach(opt => {
+              if (typeof opt.target === 'number' && !visited.has(opt.target)) {
+                queue.push(opt.target);
+              }
+            });
+          }
+        }
+        nodes.forEach(node => {
+          if (!visited.has(node.id)) {
+            errors.push(`Node ${node.id} is unreachable from the start node`);
+          }
+        });
+
+        // Dead-end loops: cycles where every node has exactly 1 option (player stuck forever)
+        const singleOptionTargets = new Map();
+        nodes.forEach(node => {
+          if (Array.isArray(node.options) && node.options.length === 1) {
+            singleOptionTargets.set(node.id, node.options[0].target);
+          }
+        });
+        const loopChecked = new Set();
+        singleOptionTargets.forEach((_, startId) => {
+          if (loopChecked.has(startId)) return;
+          const chain = [];
+          const chainSet = new Set();
+          let current = startId;
+          while (current !== undefined && singleOptionTargets.has(current) && !loopChecked.has(current)) {
+            if (chainSet.has(current)) {
+              // Found a loop — extract just the cycle portion
+              const cycleStart = chain.indexOf(current);
+              const cycle = chain.slice(cycleStart);
+              errors.push(`Dead-end loop: nodes ${cycle.join(' → ')} → ${current} form a cycle with no way out`);
+              break;
+            }
+            chain.push(current);
+            chainSet.add(current);
+            current = singleOptionTargets.get(current);
+          }
+          chain.forEach(id => loopChecked.add(id));
+        });
+
+        // Warnings
+        nodes.forEach(node => {
+          if (Array.isArray(node.options) && node.options.length === 1) {
+            warnings.push(`Node ${node.id} has only one option (linear path)`);
+          }
+          if (typeof node.text === 'string' && node.text.length > 300) {
+            warnings.push(`Node ${node.id} has very long text (${node.text.length} chars)`);
+          }
+        });
+
+        return {
+          errors,
+          warnings,
+          stats: {
+            totalNodes: nodes.length,
+            totalEndings: endings.length,
+            totalConnections,
+          }
+        };
+      }
+    };
+
+    /* ======================
+       LayoutEngine
+       ====================== */
+    const Layout = {
+      compute(adventure) {
+        if (!adventure || !adventure.nodes || adventure.nodes.length === 0) return {};
+
+        const nodes = adventure.nodes;
+        const nodeMap = new Map(nodes.map(n => [n.id, n]));
+        const startId = nodes[0].id;
+
+        // BFS to assign layers
+        const layerOf = {};
+        const layers = [];
+        const visited = new Set();
+        const queue = [{ id: startId, depth: 0 }];
+
+        while (queue.length > 0) {
+          const { id, depth } = queue.shift();
+          if (visited.has(id)) continue;
+          visited.add(id);
+          layerOf[id] = depth;
+          if (!layers[depth]) layers[depth] = [];
+          layers[depth].push(id);
+
+          const node = nodeMap.get(id);
+          if (node && Array.isArray(node.options)) {
+            node.options.forEach(opt => {
+              if (!visited.has(opt.target) && nodeMap.has(opt.target)) {
+                queue.push({ id: opt.target, depth: depth + 1 });
+              }
+            });
+          }
+        }
+
+        // Orphans
+        nodes.forEach(n => {
+          if (!visited.has(n.id)) {
+            const d = layers.length;
+            if (!layers[d]) layers[d] = [];
+            layers[d].push(n.id);
+          }
+        });
+
+        // Assign positions
+        const LAYER_Y = 150;
+        const NODE_X = 230;
+        const positions = {};
+
+        for (let d = 0; d < layers.length; d++) {
+          const row = layers[d];
+          const totalW = (row.length - 1) * NODE_X;
+          const startX = -totalW / 2;
+          for (let i = 0; i < row.length; i++) {
+            positions[row[i]] = { x: startX + i * NODE_X, y: d * LAYER_Y };
+          }
+        }
+
+        return positions;
+      }
+    };
+
+    /* ======================
+       GraphRenderer
+       ====================== */
+    const NODE_W = 180;
+    const NODE_H = 64;
+    const NODE_R = 8;
+    const ID_BADGE = 20;
+
+    const Renderer = {
+      canvas: null,
+      ctx: null,
+      camera: { x: 0, y: 0, zoom: 1 },
+      hoveredId: null,
+      _dpr: 1,
+
+      init(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this._dpr = window.devicePixelRatio || 1;
+        this._resize();
+
+        new ResizeObserver(() => {
+          this._resize();
+          this.render();
+        }).observe(canvas.parentElement);
+      },
+
+      _resize() {
+        const rect = this.canvas.parentElement.getBoundingClientRect();
+        this.canvas.width = rect.width * this._dpr;
+        this.canvas.height = rect.height * this._dpr;
+        this.canvas.style.width = rect.width + 'px';
+        this.canvas.style.height = rect.height + 'px';
+      },
+
+      screenToWorld(sx, sy) {
+        return {
+          x: (sx * this._dpr - this.camera.x) / this.camera.zoom,
+          y: (sy * this._dpr - this.camera.y) / this.camera.zoom,
+        };
+      },
+
+      worldToScreen(wx, wy) {
+        return {
+          x: (wx * this.camera.zoom + this.camera.x) / this._dpr,
+          y: (wy * this.camera.zoom + this.camera.y) / this._dpr,
+        };
+      },
+
+      hitTest(sx, sy) {
+        const w = this.screenToWorld(sx, sy);
+        if (!Model.data || !Model.data.nodes) return null;
+        // Reverse order so top-drawn nodes get priority
+        for (let i = Model.data.nodes.length - 1; i >= 0; i--) {
+          const n = Model.data.nodes[i];
+          const p = Model.positions[n.id];
+          if (!p) continue;
+          if (w.x >= p.x && w.x <= p.x + NODE_W && w.y >= p.y && w.y <= p.y + NODE_H) {
+            return n.id;
+          }
+        }
+        return null;
+      },
+
+      fitToContent() {
+        if (!Model.data || !Model.data.nodes || Model.data.nodes.length === 0) return;
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        Model.data.nodes.forEach(n => {
+          const p = Model.positions[n.id];
+          if (!p) return;
+          if (p.x < minX) minX = p.x;
+          if (p.y < minY) minY = p.y;
+          if (p.x + NODE_W > maxX) maxX = p.x + NODE_W;
+          if (p.y + NODE_H > maxY) maxY = p.y + NODE_H;
+        });
+
+        const cw = this.canvas.width;
+        const ch = this.canvas.height;
+        const pad = 60 * this._dpr;
+        const contentW = maxX - minX;
+        const contentH = maxY - minY;
+
+        if (contentW === 0 || contentH === 0) {
+          this.camera.zoom = 1;
+          this.camera.x = cw / 2 - minX;
+          this.camera.y = ch / 2 - minY;
+          return;
+        }
+
+        const zoom = Math.min((cw - pad * 2) / contentW, (ch - pad * 2) / contentH, 2);
+        this.camera.zoom = zoom;
+        this.camera.x = (cw / 2) - ((minX + contentW / 2) * zoom);
+        this.camera.y = (ch / 2) - ((minY + contentH / 2) * zoom);
+      },
+
+      render() {
+        const ctx = this.ctx;
+        const cw = this.canvas.width;
+        const ch = this.canvas.height;
+        ctx.clearRect(0, 0, cw, ch);
+
+        // Background
+        ctx.fillStyle = '#0d0221';
+        ctx.fillRect(0, 0, cw, ch);
+
+        this._drawGrid();
+
+        if (!Model.data || !Model.data.nodes) {
+          ctx.fillStyle = '#8b7fa8';
+          ctx.font = `${16 * this._dpr}px ${getComputedStyle(document.body).fontFamily}`;
+          ctx.textAlign = 'center';
+          ctx.fillText('Load or create an adventure to begin', cw / 2, ch / 2);
+          return;
+        }
+
+        this._drawEdges();
+        this._drawNodes();
+      },
+
+      _drawGrid() {
+        const ctx = this.ctx;
+        const cam = this.camera;
+        const cw = this.canvas.width;
+        const ch = this.canvas.height;
+        const spacing = 40 * cam.zoom;
+        if (spacing < 8) return; // too zoomed out
+
+        const offsetX = cam.x % spacing;
+        const offsetY = cam.y % spacing;
+
+        ctx.fillStyle = 'rgba(181, 55, 242, 0.08)';
+        for (let x = offsetX; x < cw; x += spacing) {
+          for (let y = offsetY; y < ch; y += spacing) {
+            ctx.beginPath();
+            ctx.arc(x, y, 1 * this._dpr, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      },
+
+      _drawEdges() {
+        const ctx = this.ctx;
+        const cam = this.camera;
+        const nodes = Model.data.nodes;
+
+        nodes.forEach(node => {
+          const from = Model.positions[node.id];
+          if (!from || !Array.isArray(node.options)) return;
+
+          node.options.forEach((opt, optIdx) => {
+            const to = Model.positions[opt.target];
+            if (!to) return;
+
+            const isSelected = Model.selectedId === node.id;
+            const numOpts = node.options.length;
+
+            // From bottom of source node, spread horizontally
+            const fromSpacing = NODE_W / (numOpts + 1);
+            const fx = (from.x + fromSpacing * (optIdx + 1)) * cam.zoom + cam.x;
+            const fy = (from.y + NODE_H) * cam.zoom + cam.y;
+
+            // To top-center of target node
+            const tx = (to.x + NODE_W / 2) * cam.zoom + cam.x;
+            const ty = to.y * cam.zoom + cam.y;
+
+            // Draw bezier
+            const midY = (fy + ty) / 2;
+
+            ctx.beginPath();
+            ctx.moveTo(fx, fy);
+            ctx.bezierCurveTo(fx, midY, tx, midY, tx, ty);
+
+            ctx.strokeStyle = isSelected ? 'rgba(5, 217, 232, 0.7)' : 'rgba(181, 55, 242, 0.35)';
+            ctx.lineWidth = (isSelected ? 2.5 : 1.5) * this._dpr;
+            ctx.stroke();
+
+            // Arrowhead
+            const headLen = 8 * this._dpr;
+            // Approximate angle at endpoint using bezier tangent
+            const t = 0.98;
+            const ct = 1 - t;
+            const tangentX = tx - (ct * ct * fx + 2 * ct * t * tx + t * t * tx);
+            const tangentY = ty - (ct * ct * midY + 2 * ct * t * midY + t * t * ty);
+            const angle = Math.atan2(ty - midY, tx - tx) || Math.PI / 2;
+
+            ctx.beginPath();
+            ctx.moveTo(tx, ty);
+            ctx.lineTo(tx - headLen * Math.cos(angle - 0.4), ty - headLen * Math.sin(angle - 0.4));
+            ctx.lineTo(tx - headLen * Math.cos(angle + 0.4), ty - headLen * Math.sin(angle + 0.4));
+            ctx.closePath();
+            ctx.fillStyle = isSelected ? 'rgba(5, 217, 232, 0.7)' : 'rgba(181, 55, 242, 0.5)';
+            ctx.fill();
+          });
+        });
+      },
+
+      _drawNodes() {
+        const ctx = this.ctx;
+        const cam = this.camera;
+        const nodes = Model.data.nodes;
+        const startId = nodes[0]?.id;
+
+        nodes.forEach(node => {
+          const pos = Model.positions[node.id];
+          if (!pos) return;
+
+          const x = pos.x * cam.zoom + cam.x;
+          const y = pos.y * cam.zoom + cam.y;
+          const w = NODE_W * cam.zoom;
+          const h = NODE_H * cam.zoom;
+          const r = NODE_R * cam.zoom;
+
+          const isStart = node.id === startId;
+          const isEnd = Array.isArray(node.options) && node.options.length === 0;
+          const isSelected = Model.selectedId === node.id;
+          const isHovered = this.hoveredId === node.id;
+
+          // Node background
+          ctx.beginPath();
+          ctx.roundRect(x, y, w, h, r);
+          ctx.fillStyle = isSelected ? 'rgba(26, 10, 62, 0.95)' : 'rgba(21, 5, 53, 0.9)';
+          ctx.fill();
+
+          // Border
+          let borderColor = '#b537f2';
+          if (isStart) borderColor = '#05d9e8';
+          else if (isEnd) borderColor = '#ff2a6d';
+          if (isSelected) borderColor = '#ffffff';
+          if (isHovered && !isSelected) {
+            borderColor = isStart ? '#05d9e8' : isEnd ? '#ff2a6d' : '#d06af7';
+          }
+
+          ctx.strokeStyle = borderColor;
+          ctx.lineWidth = (isSelected ? 2.5 : 1.5) * this._dpr;
+          ctx.stroke();
+
+          // Glow for selected
+          if (isSelected) {
+            ctx.shadowColor = borderColor;
+            ctx.shadowBlur = 15 * this._dpr;
+            ctx.beginPath();
+            ctx.roundRect(x, y, w, h, r);
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+          }
+
+          // ID badge
+          const badgeSize = ID_BADGE * cam.zoom;
+          const badgeX = x + 4 * cam.zoom;
+          const badgeY = y + 4 * cam.zoom;
+          ctx.beginPath();
+          ctx.roundRect(badgeX, badgeY, badgeSize, badgeSize * 0.75, 3 * cam.zoom);
+          ctx.fillStyle = borderColor;
+          ctx.fill();
+
+          ctx.fillStyle = '#0d0221';
+          ctx.font = `bold ${Math.max(9, 10 * cam.zoom) * this._dpr}px ${getComputedStyle(document.body).fontFamily}`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(String(node.id), badgeX + badgeSize / 2, badgeY + badgeSize * 0.375);
+
+          // Node text (truncated)
+          const textPad = 8 * cam.zoom;
+          const textX = x + badgeSize + textPad + 4 * cam.zoom;
+          const textMaxW = w - badgeSize - textPad * 2 - 8 * cam.zoom;
+          const fontSize = Math.max(8, 11 * cam.zoom) * this._dpr;
+
+          ctx.fillStyle = '#e8e0f0';
+          ctx.font = `${fontSize}px ${getComputedStyle(document.body).fontFamily}`;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'top';
+
+          const textY = y + 6 * cam.zoom;
+          this._drawTruncatedText(ctx, node.text, textX, textY, textMaxW, fontSize * 1.3, 3);
+
+          // Options count indicator
+          if (Array.isArray(node.options) && node.options.length > 0) {
+            const countText = `${node.options.length} option${node.options.length > 1 ? 's' : ''}`;
+            const countFontSize = Math.max(7, 9 * cam.zoom) * this._dpr;
+            ctx.font = `${countFontSize}px ${getComputedStyle(document.body).fontFamily}`;
+            ctx.fillStyle = '#8b7fa8';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(countText, x + w - 6 * cam.zoom, y + h - 4 * cam.zoom);
+          } else if (isEnd) {
+            const endFontSize = Math.max(7, 9 * cam.zoom) * this._dpr;
+            ctx.font = `bold ${endFontSize}px ${getComputedStyle(document.body).fontFamily}`;
+            ctx.fillStyle = '#ff2a6d';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText('END', x + w - 6 * cam.zoom, y + h - 4 * cam.zoom);
+          }
+        });
+      },
+
+      _drawTruncatedText(ctx, text, x, y, maxW, lineH, maxLines) {
+        const words = text.replace(/\n/g, ' ').split(' ');
+        let line = '';
+        let lineNum = 0;
+
+        for (let i = 0; i < words.length; i++) {
+          const test = line + (line ? ' ' : '') + words[i];
+          const metrics = ctx.measureText(test);
+          if (metrics.width > maxW && line) {
+            if (lineNum >= maxLines - 1) {
+              ctx.fillText(line.slice(0, -1) + '...', x, y + lineNum * lineH);
+              return;
+            }
+            ctx.fillText(line, x, y + lineNum * lineH);
+            lineNum++;
+            line = words[i];
+          } else {
+            line = test;
+          }
+        }
+        if (line && lineNum < maxLines) {
+          ctx.fillText(line, x, y + lineNum * lineH);
+        }
+      }
+    };
+
+    /* ======================
+       InteractionHandler
+       ====================== */
+    const Interaction = {
+      isDragging: false,
+      isPanning: false,
+      dragNodeId: null,
+      dragOffset: { x: 0, y: 0 },
+      panStart: { x: 0, y: 0 },
+      camStart: { x: 0, y: 0 },
+      hasMoved: false,
+
+      init(canvas) {
+        canvas.addEventListener('mousedown', e => this._onDown(e));
+        canvas.addEventListener('mousemove', e => this._onMove(e));
+        canvas.addEventListener('mouseup', e => this._onUp(e));
+        canvas.addEventListener('mouseleave', () => this._onLeave());
+        canvas.addEventListener('wheel', e => this._onWheel(e), { passive: false });
+        document.addEventListener('keydown', e => this._onKey(e));
+      },
+
+      _getCanvasXY(e) {
+        const r = Renderer.canvas.getBoundingClientRect();
+        return { x: e.clientX - r.left, y: e.clientY - r.top };
+      },
+
+      _onDown(e) {
+        const { x, y } = this._getCanvasXY(e);
+        const hitId = Renderer.hitTest(x, y);
+        this.hasMoved = false;
+
+        if (hitId !== null) {
+          this.isDragging = true;
+          this.dragNodeId = hitId;
+          const worldPos = Model.positions[hitId];
+          const cursorWorld = Renderer.screenToWorld(x, y);
+          this.dragOffset = { x: cursorWorld.x - worldPos.x, y: cursorWorld.y - worldPos.y };
+          Model.selectNode(hitId);
+          Renderer.canvas.style.cursor = 'grabbing';
+        } else {
+          this.isPanning = true;
+          this.panStart = { x: e.clientX, y: e.clientY };
+          this.camStart = { x: Renderer.camera.x, y: Renderer.camera.y };
+          Renderer.canvas.style.cursor = 'grabbing';
+        }
+      },
+
+      _onMove(e) {
+        const { x, y } = this._getCanvasXY(e);
+
+        if (this.isDragging) {
+          this.hasMoved = true;
+          const world = Renderer.screenToWorld(x, y);
+          Model.positions[this.dragNodeId] = {
+            x: world.x - this.dragOffset.x,
+            y: world.y - this.dragOffset.y,
+          };
+          Renderer.render();
+        } else if (this.isPanning) {
+          this.hasMoved = true;
+          const dpr = Renderer._dpr;
+          Renderer.camera.x = this.camStart.x + (e.clientX - this.panStart.x) * dpr;
+          Renderer.camera.y = this.camStart.y + (e.clientY - this.panStart.y) * dpr;
+          Renderer.render();
+        } else {
+          // Hover
+          const hitId = Renderer.hitTest(x, y);
+          if (hitId !== Renderer.hoveredId) {
+            Renderer.hoveredId = hitId;
+            Renderer.canvas.style.cursor = hitId !== null ? 'grab' : 'default';
+            Renderer.render();
+          }
+        }
+      },
+
+      _onUp(e) {
+        if (this.isDragging && !this.hasMoved) {
+          // Was a click, not a drag — selection already happened in _onDown
+        }
+        if (this.isDragging && this.hasMoved) {
+          // Position changed, update JSON
+          Model.emit('change', { source: 'graph-silent' });
+        }
+        this.isDragging = false;
+        this.isPanning = false;
+        this.dragNodeId = null;
+        Renderer.canvas.style.cursor = Renderer.hoveredId !== null ? 'grab' : 'default';
+
+        if (!this.hasMoved && !Model.selectedId) {
+          // Clicked empty space — deselect
+          Model.selectNode(null);
+        }
+      },
+
+      _onLeave() {
+        if (this.isDragging || this.isPanning) return;
+        Renderer.hoveredId = null;
+        Renderer.canvas.style.cursor = 'default';
+        Renderer.render();
+      },
+
+      _onWheel(e) {
+        e.preventDefault();
+        const { x, y } = this._getCanvasXY(e);
+        const dpr = Renderer._dpr;
+        const sx = x * dpr;
+        const sy = y * dpr;
+
+        const factor = e.deltaY < 0 ? 1.1 : 0.9;
+        const oldZoom = Renderer.camera.zoom;
+        const newZoom = Math.max(0.15, Math.min(4, oldZoom * factor));
+
+        Renderer.camera.x = sx - (sx - Renderer.camera.x) * (newZoom / oldZoom);
+        Renderer.camera.y = sy - (sy - Renderer.camera.y) * (newZoom / oldZoom);
+        Renderer.camera.zoom = newZoom;
+        Renderer.render();
+      },
+
+      _onKey(e) {
+        // Don't intercept when typing in inputs
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+          if (e.key === 'Escape') e.target.blur();
+          return;
+        }
+
+        if ((e.key === 'Delete' || e.key === 'Backspace') && Model.selectedId !== null) {
+          e.preventDefault();
+          Model.deleteNode(Model.selectedId);
+        }
+        if (e.key === 'Escape') {
+          Model.selectNode(null);
+        }
+        if (e.ctrlKey && e.key === 's') {
+          e.preventDefault();
+          exportAdventure();
+        }
+      }
+    };
+
+    /* ======================
+       JsonEditor
+       ====================== */
+    const Editor = {
+      textarea: null,
+      overlay: null,
+      statusEl: null,
+      _suppress: false,
+      _debounce: null,
+
+      init(textarea, overlay, statusEl) {
+        this.textarea = textarea;
+        this.overlay = overlay;
+        this.statusEl = statusEl;
+
+        textarea.addEventListener('input', () => this._onInput());
+        textarea.addEventListener('keydown', e => this._onKeyDown(e));
+        textarea.addEventListener('scroll', () => {
+          overlay.scrollTop = textarea.scrollTop;
+          overlay.scrollLeft = textarea.scrollLeft;
+        });
+      },
+
+      setValue(jsonStr) {
+        this._suppress = true;
+        this.textarea.value = jsonStr;
+        this._highlight(jsonStr);
+        this._suppress = false;
+        this.statusEl.textContent = 'Valid JSON';
+        this.statusEl.className = 'valid';
+      },
+
+      format() {
+        const text = this.textarea.value;
+        try {
+          const parsed = JSON.parse(text);
+          const formatted = JSON.stringify(parsed, null, 2);
+          this.textarea.value = formatted;
+          this._highlight(formatted);
+          this._parseAndSync();
+        } catch (e) {
+          // Can't format invalid JSON — just show the error
+          this.statusEl.textContent = 'Cannot format: ' + e.message;
+          this.statusEl.className = 'error';
+        }
+      },
+
+      _onKeyDown(e) {
+        // Ctrl+Shift+F: format JSON
+        if (e.ctrlKey && e.shiftKey && e.key === 'F') {
+          e.preventDefault();
+          this.format();
+          return;
+        }
+
+        const ta = this.textarea;
+        const start = ta.selectionStart;
+        const end = ta.selectionEnd;
+        const val = ta.value;
+
+        const PAIRS = { '{': '}', '[': ']', '"': '"' };
+        const CLOSERS = new Set(['}', ']', '"']);
+
+        // Auto-close brackets and quotes
+        if (PAIRS[e.key]) {
+          const closer = PAIRS[e.key];
+
+          // For quotes: skip if already inside a string (simple heuristic)
+          if (e.key === '"') {
+            // If the next char is already a quote and we typed quote, skip over it
+            if (val[start] === '"' && start === end) {
+              e.preventDefault();
+              ta.selectionStart = ta.selectionEnd = start + 1;
+              this._onInput();
+              return;
+            }
+          }
+
+          // If text is selected, wrap it
+          if (start !== end) {
+            e.preventDefault();
+            const selected = val.substring(start, end);
+            const replacement = e.key + selected + closer;
+            ta.setRangeText(replacement, start, end, 'end');
+            ta.selectionStart = start + 1;
+            ta.selectionEnd = start + 1 + selected.length;
+            this._onInput();
+            return;
+          }
+
+          // Insert pair and place cursor between
+          e.preventDefault();
+          ta.setRangeText(e.key + closer, start, end, 'end');
+          ta.selectionStart = ta.selectionEnd = start + 1;
+          this._onInput();
+          return;
+        }
+
+        // Skip over closing bracket/quote if it's the next char
+        if (CLOSERS.has(e.key) && val[start] === e.key && start === end) {
+          e.preventDefault();
+          ta.selectionStart = ta.selectionEnd = start + 1;
+          this._onInput();
+          return;
+        }
+
+        // Backspace: delete matching pair if cursor is between them
+        if (e.key === 'Backspace' && start === end && start > 0) {
+          const before = val[start - 1];
+          const after = val[start];
+          if (PAIRS[before] && PAIRS[before] === after) {
+            e.preventDefault();
+            ta.setRangeText('', start - 1, start + 1, 'end');
+            ta.selectionStart = ta.selectionEnd = start - 1;
+            this._onInput();
+            return;
+          }
+        }
+
+        // Enter: auto-indent
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const before = val[start - 1];
+          const after = val[start];
+
+          // Get current line's indentation
+          const lineStart = val.lastIndexOf('\n', start - 1) + 1;
+          const currentLine = val.substring(lineStart, start);
+          const indent = currentLine.match(/^(\s*)/)[1];
+
+          if ((before === '{' && after === '}') || (before === '[' && after === ']')) {
+            // Cursor between braces/brackets: add indented newline + closing on separate line
+            const inner = '\n' + indent + '  ';
+            const outer = '\n' + indent;
+            ta.setRangeText(inner + outer, start, end, 'end');
+            ta.selectionStart = ta.selectionEnd = start + inner.length;
+          } else if (before === '{' || before === '[' || before === ',') {
+            // After opener or comma: increase indent
+            const newIndent = (before === ',') ? indent : indent + '  ';
+            ta.setRangeText('\n' + newIndent, start, end, 'end');
+            ta.selectionStart = ta.selectionEnd = start + 1 + newIndent.length;
+          } else {
+            // Normal newline with same indent
+            ta.setRangeText('\n' + indent, start, end, 'end');
+            ta.selectionStart = ta.selectionEnd = start + 1 + indent.length;
+          }
+          this._onInput();
+          return;
+        }
+
+        // Tab: insert 2 spaces
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          if (e.shiftKey) {
+            // Outdent: remove up to 2 spaces from start of current line
+            const lineStart = val.lastIndexOf('\n', start - 1) + 1;
+            const lineText = val.substring(lineStart);
+            const spacesToRemove = lineText.startsWith('  ') ? 2 : lineText.startsWith(' ') ? 1 : 0;
+            if (spacesToRemove > 0) {
+              ta.setRangeText('', lineStart, lineStart + spacesToRemove, 'end');
+              ta.selectionStart = ta.selectionEnd = Math.max(lineStart, start - spacesToRemove);
+            }
+          } else {
+            ta.setRangeText('  ', start, end, 'end');
+            ta.selectionStart = ta.selectionEnd = start + 2;
+          }
+          this._onInput();
+          return;
+        }
+      },
+
+      _onInput() {
+        if (this._suppress) return;
+        clearTimeout(this._debounce);
+        this._debounce = setTimeout(() => this._parseAndSync(), 300);
+        // Update syntax highlight immediately
+        this._highlight(this.textarea.value);
+      },
+
+      _parseAndSync() {
+        const text = this.textarea.value;
+        try {
+          const parsed = JSON.parse(text);
+          Model.setData(parsed, 'editor');
+          // Compute layout for any new nodes
+          const newPositions = Layout.compute(parsed);
+          // Preserve existing positions, add new ones
+          for (const id in newPositions) {
+            if (!Model.positions[id]) {
+              Model.positions[id] = newPositions[id];
+            }
+          }
+          // Remove positions for deleted nodes
+          const nodeIds = new Set((parsed.nodes || []).map(n => n.id));
+          for (const id in Model.positions) {
+            if (!nodeIds.has(Number(id))) delete Model.positions[id];
+          }
+
+          this.statusEl.textContent = 'Valid JSON';
+          this.statusEl.className = 'valid';
+
+          // Update title input
+          document.getElementById('adventure-title').value = parsed.title || '';
+
+          Renderer.render();
+        } catch (e) {
+          this.statusEl.textContent = e.message;
+          this.statusEl.className = 'error';
+        }
+      },
+
+      _highlight(str) {
+        // Escape HTML
+        let html = str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+
+        // Tokenize JSON for syntax highlighting
+        html = html.replace(
+          /("(?:\\.|[^"\\])*")\s*:/g,
+          '<span class="tok-key">$1</span>:'
+        );
+        html = html.replace(
+          /:\s*("(?:\\.|[^"\\])*")/g,
+          function(match, str) {
+            return match.replace(str, '<span class="tok-string">' + str + '</span>');
+          }
+        );
+        // Standalone strings in arrays (avoid lookbehind for compatibility)
+        html = html.replace(
+          /([\[,]\s*)("(?:\\.|[^"\\])*")(\s*[,\]])/g,
+          function(match, pre, str, post) {
+            return pre + '<span class="tok-string">' + str + '</span>' + post;
+          }
+        );
+        html = html.replace(
+          /:\s*(-?\d+(?:\.\d+)?)/g,
+          function(match, num) {
+            return match.replace(num, '<span class="tok-number">' + num + '</span>');
+          }
+        );
+        // Numbers in arrays (avoid lookbehind for compatibility)
+        html = html.replace(
+          /([\[,]\s*)(-?\d+(?:\.\d+)?)(\s*[,\]])/g,
+          function(match, pre, num, post) {
+            return pre + '<span class="tok-number">' + num + '</span>' + post;
+          }
+        );
+        html = html.replace(
+          /\b(true|false)\b/g,
+          '<span class="tok-bool">$1</span>'
+        );
+        html = html.replace(
+          /\bnull\b/g,
+          '<span class="tok-null">null</span>'
+        );
+        html = html.replace(
+          /([{}\[\]])/g,
+          '<span class="tok-bracket">$1</span>'
+        );
+
+        this.overlay.innerHTML = html + '\n';
+      },
+
+      scrollToNode(nodeId) {
+        if (nodeId === null) return;
+        const text = this.textarea.value;
+        // Find the position of this node's "id": <nodeId> in the JSON
+        const pattern = new RegExp(`"id"\\s*:\\s*${nodeId}\\b`);
+        const match = pattern.exec(text);
+        if (!match) return;
+
+        // Count lines up to match
+        const before = text.substring(0, match.index);
+        const lineNum = before.split('\n').length - 1;
+        const lineHeight = parseFloat(getComputedStyle(this.textarea).lineHeight) || 19.2;
+        this.textarea.scrollTop = lineNum * lineHeight - this.textarea.clientHeight / 3;
+        this.overlay.scrollTop = this.textarea.scrollTop;
+      }
+    };
+
+    /* ======================
+       Validation Panel
+       ====================== */
+    function renderValidation(results) {
+      const { errors, warnings, stats } = results;
+      const statsEl = document.getElementById('validation-stats');
+      const resultsEl = document.getElementById('validation-results');
+
+      statsEl.textContent = `Nodes: ${stats.totalNodes} | Endings: ${stats.totalEndings} | Connections: ${stats.totalConnections}`;
+
+      let html = '';
+      if (errors.length === 0 && warnings.length === 0) {
+        html = '<div class="v-item pass">All checks passed!</div>';
+      }
+      errors.forEach(msg => {
+        html += `<div class="v-item error">${escapeHtml(msg)}</div>`;
+      });
+      warnings.forEach(msg => {
+        html += `<div class="v-item warning">${escapeHtml(msg)}</div>`;
+      });
+      resultsEl.innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    /* ======================
+       Toolbar Actions
+       ====================== */
+    function newAdventure() {
+      const adventure = {
+        title: 'New Adventure',
+        nodes: [
+          { id: 1, text: 'Start of the adventure...', options: [] }
+        ]
+      };
+      Model.data = adventure;
+      Model.positions = Layout.compute(adventure);
+      Model.selectedId = null;
+      document.getElementById('adventure-title').value = adventure.title;
+      Editor.setValue(Model.toJSON());
+      Renderer.fitToContent();
+      Renderer.render();
+      runValidation();
+    }
+
+    function loadAdventure(jsonText) {
+      try {
+        const adventure = JSON.parse(jsonText);
+        Model.data = adventure;
+        Model.positions = Layout.compute(adventure);
+        Model.selectedId = null;
+        document.getElementById('adventure-title').value = adventure.title || '';
+        Editor.setValue(Model.toJSON());
+        Renderer.fitToContent();
+        Renderer.render();
+        runValidation();
+      } catch (e) {
+        alert('Invalid JSON: ' + e.message);
+      }
+    }
+
+    function exportAdventure() {
+      if (!Model.data) return;
+      // Sync title from input
+      Model.data.title = document.getElementById('adventure-title').value || 'Untitled';
+      const json = JSON.stringify(Model.data, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = (Model.data.title || 'adventure').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function runValidation() {
+      if (!Model.data) return;
+      const results = Validator.validate(Model.data);
+      renderValidation(results);
+    }
+
+    /* ======================
+       Panel Divider (drag to resize)
+       ====================== */
+    function initDivider() {
+      const divider = document.getElementById('panel-divider');
+      const editorPanel = document.getElementById('editor-panel');
+      let startX, startW;
+
+      divider.addEventListener('mousedown', e => {
+        e.preventDefault();
+        startX = e.clientX;
+        startW = editorPanel.offsetWidth;
+        divider.classList.add('dragging');
+
+        const onMove = e => {
+          const delta = startX - e.clientX;
+          editorPanel.style.width = Math.max(200, Math.min(800, startW + delta)) + 'px';
+        };
+        const onUp = () => {
+          divider.classList.remove('dragging');
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+        };
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    }
+
+    /* ======================
+       Wiring & Init
+       ====================== */
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('graph-canvas');
+      const textarea = document.getElementById('json-editor');
+      const overlay = document.getElementById('json-overlay');
+      const statusEl = document.getElementById('editor-status');
+
+      Renderer.init(canvas);
+      Editor.init(textarea, overlay, statusEl);
+      Interaction.init(canvas);
+      initDivider();
+
+      // Model -> render
+      Model.on('change', e => {
+        Renderer.render();
+        if (e.source === 'graph' || e.source === 'graph-silent') {
+          // Sync title
+          if (Model.data) {
+            Model.data.title = document.getElementById('adventure-title').value || Model.data.title;
+          }
+          if (e.source === 'graph') {
+            Editor.setValue(Model.toJSON());
+          }
+        }
+        runValidation();
+      });
+
+      Model.on('select', e => {
+        Renderer.render();
+        Editor.scrollToNode(e.nodeId);
+      });
+
+      // Toolbar buttons
+      document.getElementById('btn-new').addEventListener('click', newAdventure);
+
+      document.getElementById('btn-load').addEventListener('click', () => {
+        document.getElementById('file-input').click();
+      });
+
+      document.getElementById('file-input').addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => loadAdventure(reader.result);
+        reader.readAsText(file);
+        e.target.value = ''; // allow re-loading same file
+      });
+
+      document.getElementById('btn-add-node').addEventListener('click', () => {
+        Model.addNode();
+      });
+
+      document.getElementById('btn-format').addEventListener('click', () => Editor.format());
+      document.getElementById('btn-validate').addEventListener('click', runValidation);
+      document.getElementById('btn-export').addEventListener('click', exportAdventure);
+
+      // Graph controls
+      document.getElementById('btn-zoom-in').addEventListener('click', () => {
+        const cw = Renderer.canvas.width / 2;
+        const ch = Renderer.canvas.height / 2;
+        const oldZ = Renderer.camera.zoom;
+        const newZ = Math.min(4, oldZ * 1.3);
+        Renderer.camera.x = cw - (cw - Renderer.camera.x) * (newZ / oldZ);
+        Renderer.camera.y = ch - (ch - Renderer.camera.y) * (newZ / oldZ);
+        Renderer.camera.zoom = newZ;
+        Renderer.render();
+      });
+
+      document.getElementById('btn-zoom-out').addEventListener('click', () => {
+        const cw = Renderer.canvas.width / 2;
+        const ch = Renderer.canvas.height / 2;
+        const oldZ = Renderer.camera.zoom;
+        const newZ = Math.max(0.15, oldZ * 0.7);
+        Renderer.camera.x = cw - (cw - Renderer.camera.x) * (newZ / oldZ);
+        Renderer.camera.y = ch - (ch - Renderer.camera.y) * (newZ / oldZ);
+        Renderer.camera.zoom = newZ;
+        Renderer.render();
+      });
+
+      document.getElementById('btn-fit').addEventListener('click', () => {
+        Renderer.fitToContent();
+        Renderer.render();
+      });
+
+      // Validation panel toggle
+      document.getElementById('validation-header').addEventListener('click', () => {
+        document.getElementById('validation-panel').classList.toggle('collapsed');
+      });
+
+      // Title input syncs to model
+      document.getElementById('adventure-title').addEventListener('input', e => {
+        if (Model.data) {
+          Model.data.title = e.target.value;
+          Editor.setValue(Model.toJSON());
+        }
+      });
+
+      // Start with new adventure
+      newAdventure();
+    });
+
+  })();
+  </script>
+</body>
+</html>

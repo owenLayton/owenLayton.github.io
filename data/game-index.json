@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "nfl-rivals",
+    "title": "NFL Rivals",
+    "category": "professional",
+    "subtitle": "A fast-paced, arcade-style game featuring licensed NFL teams and players.",
+    "heroImage": "assets/nfl-rivals/nfl-rivals-logo.png",
+    "file": "data/games/nfl-rivals.json"
+  },
+  {
+    "slug": "sorcerers-folly",
+    "title": "Sorcerer's Folly",
+    "category": "personal",
+    "subtitle": "An arcade game inspired by Asteroids built for Ludem Dare 55.",
+    "heroImage": "https://placekitten.com/900/450",
+    "file": "data/games/sorcerers-folly.json"
+  },
+  {
+    "slug": "pudgy-party",
+    "title": "Pudgy Party",
+    "category": "professional",
+    "subtitle": "An obstable course game featuring costumed penguins competiting to be the last one standing.",
+    "heroImage": "assets/pudgy-party/pudgy-party-logo.png",
+    "file": "data/games/pudgy-party.json"
+  }
+]

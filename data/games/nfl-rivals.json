@@ -1,0 +1,20 @@
+{
+  "slug": "nfl-rivals",
+  "title": "NFL Rivals",
+  "category": "professional",
+  "subtitle": "A fast-paced, arcade-style game featuring licensed NFL teams and players.",
+  "description": [
+    "Focused on team management, card collecting, and blockchain-integrated assets (NFTs).",
+    "Contributed to backend services, live-ops tooling, and client-server integration."
+  ],
+  "heroImage": "assets/nfl-rivals/nfl-rivals-logo.png",
+  "gallery": [
+    "https://placekitten.com/600/340",
+    "https://placekitten.com/601/340",
+    "https://placekitten.com/602/340",
+    "https://placekitten.com/603/340"
+  ],
+  "role": "Software Engineer",
+  "tools": ["Unity", "C#", "Node.js"],
+  "platforms": ["iOS", "Android"]
+}
