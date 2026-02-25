@@ -1,0 +1,123 @@
+{
+  "title": "The Ruined Tower",
+  "nodes": [
+    {
+      "id": 1,
+      "text": "You stand before a towering stone gateway covered in glowing runes. The air hums with energy. A mossy path leads north into a dark forest. To the east, you see a faint light flickering.",
+      "options": [
+        { "text": "Head north into the dark forest", "target": 2 },
+        { "text": "Go east toward the flickering light", "target": 3 }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Ancient trees stretch endlessly above you, their canopy blocking most of the light. Strange whispers echo between the trunks. A narrow trail goes deeper north, and the gateway is to the south.",
+      "options": [
+        { "text": "Continue deeper north", "target": 4 },
+        { "text": "Return to the gateway", "target": 1 }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "A small campfire crackles in a sheltered alcove. A mysterious figure in a cloak sits nearby, warming their hands. They glance up as you approach.",
+      "options": [
+        { "text": "Speak to the cloaked figure", "target": 5 },
+        { "text": "Search the alcove quietly", "target": 6 },
+        { "text": "Return to the gateway", "target": 1 }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "You emerge into a moonlit clearing. In the center stands a crumbling tower with a heavy iron door. A crystal pedestal sits nearby, empty. A cave entrance is visible to the east.",
+      "options": [
+        { "text": "Try the iron door", "target": 7 },
+        { "text": "Explore the cave to the east", "target": 8 },
+        { "text": "Head back south through the forest", "target": 2 }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "The figure speaks in a raspy voice: \"Ah, a traveler. The tower to the north holds great secrets... but only for those who carry the right key. I found this rusty old thing nearby — take it, if you wish.\" They hold out a rusty key.",
+      "options": [
+        { "text": "Take the rusty key", "target": 9 },
+        { "text": "Decline and head back to the gateway", "target": 1 }
+      ]
+    },
+    {
+      "id": 6,
+      "text": "You creep around the edges of the alcove. Behind a loose rock, you find a rusty key hidden in the dirt. The cloaked figure doesn't seem to notice.",
+      "options": [
+        { "text": "Pocket the key and head to the gateway", "target": 10 },
+        { "text": "Pocket the key and speak to the figure", "target": 5 }
+      ]
+    },
+    {
+      "id": 7,
+      "text": "The iron door is locked tight. Runes around the frame glow faintly, as if waiting for something. You'll need a key to get through.",
+      "options": [
+        { "text": "Explore the cave to the east", "target": 8 },
+        { "text": "Head back south through the forest", "target": 2 }
+      ]
+    },
+    {
+      "id": 8,
+      "text": "A damp cave illuminated by bioluminescent mushrooms. Water drips from stalactites. Something glimmers in a shallow pool at the back — it's a glowing crystal!",
+      "options": [
+        { "text": "Take the glowing crystal", "target": 11 },
+        { "text": "Leave the crystal and go back to the clearing", "target": 4 }
+      ]
+    },
+    {
+      "id": 9,
+      "text": "You take the rusty key. It's cold and heavy in your hand. The cloaked figure nods knowingly. \"The tower awaits, traveler.\"",
+      "options": [
+        { "text": "Head to the gateway and go north", "target": 2 },
+        { "text": "Thank the figure and explore further east", "target": 1 }
+      ]
+    },
+    {
+      "id": 10,
+      "text": "You slip the rusty key into your pocket and make your way back to the stone gateway. The runes seem to pulse a little brighter now.",
+      "options": [
+        { "text": "Head north into the forest", "target": 2 },
+        { "text": "Go east to the campfire", "target": 3 }
+      ]
+    },
+    {
+      "id": 11,
+      "text": "You reach into the pool and grasp the crystal. It pulses with warm light, and the mushrooms around you glow brighter in response. This feels important.",
+      "options": [
+        { "text": "Return to the clearing", "target": 12 }
+      ]
+    },
+    {
+      "id": 12,
+      "text": "Back in the clearing, the crystal pedestal begins to hum as you approach. The glowing crystal in your hand resonates with it. Do you have a key for that iron door?",
+      "options": [
+        { "text": "Try the iron door with the rusty key", "target": 13 },
+        { "text": "Place the crystal on the pedestal", "target": 14 },
+        { "text": "Head back south through the forest", "target": 2 }
+      ]
+    },
+    {
+      "id": 13,
+      "text": "You insert the rusty key into the lock. With a grinding screech, the iron door swings open, revealing a spiraling staircase inside the tower. Ancient dust swirls in the moonlight.",
+      "options": [
+        { "text": "Climb the stairs", "target": 15 }
+      ]
+    },
+    {
+      "id": 14,
+      "text": "You place the crystal on the pedestal. It locks into place with a satisfying click, and beams of light shoot outward, illuminating hidden runes on the tower walls. Beautiful, but the door is still locked.",
+      "options": [
+        { "text": "Try the iron door with the rusty key", "target": 13 },
+        { "text": "Head back to find a key", "target": 2 }
+      ]
+    },
+    {
+      "id": 15,
+      "text": "Inside the tower, spiraling stairs lead up to a single room. Bookshelves line the walls, filled with ancient tomes. A grand window overlooks the entire land. On a desk sits a note that reads: \"Congratulations, adventurer. You've found the secret of the tower. The real treasure was the journey itself... and this portfolio website.\"",
+      "options": []
+    }
+  ]
+}

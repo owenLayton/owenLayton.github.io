@@ -1,0 +1,10 @@
+{
+  "slug": "sorcerers-folly",
+  "title": "Sorcerer's Folly",
+  "category": "personal",
+  "subtitle": "An arcade game inspired by Asteroids built for Ludem Dare 55.",
+  "description": "Solve environmental puzzles, collect yarn balls, and uncover the secrets of the ancient cat temple. Built as a solo passion project from concept to release.",
+  "heroVideo": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  "role": "Software Engineer, Team Leader",
+  "tools": ["Unity", "C#"]
+}

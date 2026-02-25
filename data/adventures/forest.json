@@ -1,0 +1,144 @@
+{
+  "title": "The Whispering Forest",
+  "nodes": [
+    {
+      "id": 1,
+      "text": "You wake up on a bed of moss in the middle of an ancient forest. Fireflies drift lazily around you. A dirt path splits in two directions — one winds uphill toward a faint melody, the other descends into a foggy hollow.",
+      "options": [
+        { "text": "Follow the melody uphill", "target": 2 },
+        { "text": "Descend into the foggy hollow", "target": 3 }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "The path climbs through twisted oaks draped in silver moss. The melody grows louder — it's coming from a wooden shrine nestled between two enormous tree roots. A fox with glowing blue eyes sits atop it, watching you.",
+      "options": [
+        { "text": "Approach the fox cautiously", "target": 4 },
+        { "text": "Examine the shrine from a distance", "target": 5 },
+        { "text": "Go back and take the other path", "target": 3 }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Fog rolls thick around your ankles as you descend. The trees here are gnarled and dark. You spot a stone well in a small clearing, and beyond it, a bridge over a black stream.",
+      "options": [
+        { "text": "Look into the well", "target": 6 },
+        { "text": "Cross the bridge", "target": 7 },
+        { "text": "Go back and take the uphill path", "target": 2 }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "The fox tilts its head and speaks — yes, speaks: \"You carry no lantern, yet you walk the forest at night. Brave or foolish?\" It leaps down and a small golden lantern materializes where it sat.",
+      "options": [
+        { "text": "Take the golden lantern", "target": 8 },
+        { "text": "Ask the fox for guidance", "target": 9 }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "The shrine is carved with symbols of the moon and stars. A slot in the center looks like it's meant to hold something — perhaps an offering? The melody seems to emanate from the carvings themselves.",
+      "options": [
+        { "text": "Approach the fox on top", "target": 4 },
+        { "text": "Head back down to the fork", "target": 1 }
+      ]
+    },
+    {
+      "id": 6,
+      "text": "You peer into the well. Far below, you see a faint glow — a silver coin rests on a ledge just within reach. The water is ice cold.",
+      "options": [
+        { "text": "Reach in and grab the silver coin", "target": 10 },
+        { "text": "Leave it and cross the bridge instead", "target": 7 }
+      ]
+    },
+    {
+      "id": 7,
+      "text": "The bridge creaks under your weight. Halfway across, you see something moving in the dark water below — a massive shadowy shape. On the far side, a moss-covered door is built into a hillside.",
+      "options": [
+        { "text": "Hurry across to the door", "target": 11 },
+        { "text": "Turn back — this feels wrong", "target": 3 }
+      ]
+    },
+    {
+      "id": 8,
+      "text": "The lantern is warm to the touch and glows with a steady golden light. The fox nods approvingly. \"The hollow below hides a door. That lantern will show you what the fog conceals. Go.\"",
+      "options": [
+        { "text": "Head down to the foggy hollow", "target": 12 }
+      ]
+    },
+    {
+      "id": 9,
+      "text": "\"I am the keeper of this shrine,\" the fox says. \"Long ago, travelers left offerings here for safe passage. The forest remembers those who show respect.\" It gestures to the lantern. \"Take it. You'll need it below.\"",
+      "options": [
+        { "text": "Take the golden lantern", "target": 8 },
+        { "text": "Bow to the fox and leave", "target": 1 }
+      ]
+    },
+    {
+      "id": 10,
+      "text": "You plunge your hand into the freezing water and snatch the silver coin. It's engraved with a crescent moon. As you pull your hand out, the well rumbles and a hidden staircase spirals downward inside it.",
+      "options": [
+        { "text": "Descend the hidden staircase", "target": 13 },
+        { "text": "Pocket the coin and cross the bridge", "target": 7 }
+      ]
+    },
+    {
+      "id": 11,
+      "text": "You reach the moss-covered door and push it open. Inside is a small underground chamber lit by glowing roots. An ancient tree spirit — a face formed in bark and vines — watches you with hollow eyes. \"Why have you come to the heart of the forest?\"",
+      "options": [
+        { "text": "\"I'm looking for a way out.\"", "target": 14 },
+        { "text": "\"I seek the forest's secret.\"", "target": 15 }
+      ]
+    },
+    {
+      "id": 12,
+      "text": "With the lantern held high, the fog parts before you like a curtain. You can now see clearly — the well, the bridge, and a third path you couldn't see before, leading to a hidden garden of luminous flowers.",
+      "options": [
+        { "text": "Enter the hidden garden", "target": 16 },
+        { "text": "Cross the bridge with the lantern", "target": 11 },
+        { "text": "Look into the well", "target": 6 }
+      ]
+    },
+    {
+      "id": 13,
+      "text": "The staircase spirals deep underground. At the bottom, you find a cavern filled with crystallized tree sap — amber that glows from within. In the center, a pedestal holds an ancient book bound in leaves.",
+      "options": [
+        { "text": "Open the leaf-bound book", "target": 17 },
+        { "text": "Climb back up — it's too eerie", "target": 3 }
+      ]
+    },
+    {
+      "id": 14,
+      "text": "The tree spirit sighs, and leaves fall from the ceiling. \"There is no way out of the forest. The forest is everywhere. But...\" Its bark-face shifts into something resembling a smile. \"Perhaps that is the secret.\" Vines part to reveal a sunlit meadow beyond.",
+      "options": [
+        { "text": "Step into the meadow", "target": 18 }
+      ]
+    },
+    {
+      "id": 15,
+      "text": "\"The secret?\" The spirit chuckles — a sound like creaking wood. \"The forest whispers it to everyone who listens. You've already heard it in the melody, seen it in the fox's eyes, felt it in the cold well water. The secret is that every path leads somewhere worth going.\"",
+      "options": [
+        { "text": "\"Then show me where this path leads.\"", "target": 18 }
+      ]
+    },
+    {
+      "id": 16,
+      "text": "The hidden garden is breathtaking — flowers of every color glow softly, their petals humming with the same melody from the shrine. At the garden's center, a stone tablet reads: \"To those who carry light into darkness — the forest thanks you.\" A doorway of woven branches opens before you.",
+      "options": [
+        { "text": "Step through the doorway", "target": 18 }
+      ]
+    },
+    {
+      "id": 17,
+      "text": "You open the book. The pages are blank except for the first, which reads in shimmering ink: \"The Whispering Forest remembers all who wander its paths. Your journey is now part of its story.\" The amber around you brightens, and a passage opens upward toward the surface.",
+      "options": [
+        { "text": "Follow the passage to the surface", "target": 18 }
+      ]
+    },
+    {
+      "id": 18,
+      "text": "You emerge into warm sunlight at the edge of the forest. Behind you, the trees sway gently as if waving goodbye. The fireflies from where you woke drift past one last time. The whispering fades into silence, but you carry the forest's story with you. A small sign reads: \"Thanks for playing! — Owen's Portfolio\"",
+      "options": []
+    }
+  ]
+}

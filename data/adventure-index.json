@@ -1,0 +1,4 @@
+[
+  { "id": "tower", "title": "The Ruined Tower", "file": "data/adventures/tower.json" },
+  { "id": "forest", "title": "The Whispering Forest", "file": "data/adventures/forest.json" }
+]
