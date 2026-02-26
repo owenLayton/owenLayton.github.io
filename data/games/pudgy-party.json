@@ -15,6 +15,6 @@
     "https://placekitten.com/603/340"
   ],
   "role": "Software Engineer",
-  "tools": ["Unity", "C#", "Node.js"],
+  "tools": ["Unity", "C#"],
   "platforms": ["iOS", "Android"]
 }
