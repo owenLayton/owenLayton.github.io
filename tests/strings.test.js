@@ -34,10 +34,15 @@ describe('STRINGS data integrity', () => {
       expect(typeof s.downloadCV).toBe('string');
     });
 
-    test('bio is a non-empty array of strings', () => {
+    test('bio is a non-empty array of strings or media objects', () => {
       expect(Array.isArray(s.bio)).toBe(true);
       expect(s.bio.length).toBeGreaterThan(0);
-      s.bio.forEach(p => expect(typeof p).toBe('string'));
+      s.bio.forEach(p => {
+        if (typeof p === 'string') return;
+        expect(typeof p).toBe('object');
+        expect(['image', 'gif', 'video']).toContain(p.type);
+        expect(typeof p.src).toBe('string');
+      });
     });
 
     test('highlights is a non-empty array of {title, text}', () => {

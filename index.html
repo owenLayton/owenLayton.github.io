@@ -37,12 +37,27 @@
         </div>
       `).join('');
 
-      const bioHtml = s.bio.map(p => `<p>${p}</p>`).join('');
+      const bioHtml = s.bio.map(item => {
+        if (typeof item === 'string') return `<p>${item}</p>`;
+        if (item.type === 'image' || item.type === 'gif') {
+          return `<figure class="bio-media">
+            <img src="${item.src}" alt="${item.alt || ''}" class="bio-media-content${item.type === 'gif' ? ' gif' : ''}">
+            ${item.caption ? `<figcaption>${item.caption}</figcaption>` : ''}
+          </figure>`;
+        }
+        if (item.type === 'video') {
+          return `<figure class="bio-media">
+            <iframe src="${toEmbedUrl(item.src)}" class="bio-media-content bio-video" allowfullscreen title="${item.alt || ''}"></iframe>
+            ${item.caption ? `<figcaption>${item.caption}</figcaption>` : ''}
+          </figure>`;
+        }
+        return '';
+      }).join('');
 
       document.getElementById('about-page').innerHTML = `
         <!-- Hero / Intro -->
         <section class="about-hero">
-          <img src="https://placekitten.com/400/400" alt="${s.photoAlt}" class="about-photo">
+          <img src="https://placehold.co/400x400/1a0533/b537f2?text=OL" alt="${s.photoAlt}" class="about-photo">
           <div class="about-intro">
             <h1>${s.name}</h1>
             <p class="tagline">${s.tagline}</p>

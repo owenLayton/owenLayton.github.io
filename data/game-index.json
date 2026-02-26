@@ -2,6 +2,7 @@
   {
     "slug": "nfl-rivals",
     "title": "NFL Rivals",
+    "company": "Mythical Games",
     "category": "professional",
     "subtitle": "A fast-paced, arcade-style game featuring licensed NFL teams and players.",
     "heroImage": "assets/nfl-rivals/nfl-rivals-logo.png",
@@ -18,6 +19,7 @@
   {
     "slug": "pudgy-party",
     "title": "Pudgy Party",
+    "company": "Mythical Games",
     "category": "professional",
     "subtitle": "An obstable course game featuring costumed penguins competiting to be the last one standing.",
     "heroImage": "assets/pudgy-party/pudgy-party-logo.png",

@@ -35,8 +35,11 @@ const STRINGS = {
     sectionTitle: 'About Me',
     bio: [
       'I\'m a game developer with a passion for building interactive experiences that players remember. From concept to ship, I love the entire process of bringing ideas to life — designing systems, solving tricky technical problems, and polishing until it feels just right.',
+      { type: 'image', src: 'https://placehold.co/720x400/1a0533/b537f2?text=Example+Image', alt: 'Example image', caption: 'An example image in the bio section' },
       'I\'ve worked across professional studios and personal projects, gaining experience with a range of engines, tools, and team sizes. Whether it\'s gameplay programming, tools development, or prototyping something weird and experimental, I\'m happiest when I\'m building.',
+      { type: 'gif', src: 'https://placehold.co/720x400/1a0533/05d9e8?text=Example+GIF.gif', alt: 'Example gif', caption: 'An example GIF in the bio section' },
       'Outside of game development, I enjoy tinkering with creative tech projects, exploring new frameworks, and finding the fun in every technical challenge. I\'m always open to interesting collaborations and new opportunities.',
+      { type: 'video', src: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', alt: 'Example video', caption: 'An example video in the bio section' },
     ],
 
     glanceTitle: 'At a Glance',

@@ -174,7 +174,7 @@ describe('renderGameDetail', () => {
 
     const iframe = container.querySelector('.game-hero-video');
     expect(iframe).not.toBeNull();
-    expect(iframe.getAttribute('src')).toBe(game.heroVideo);
+    expect(iframe.getAttribute('src')).toBe(toEmbedUrl(game.heroVideo));
   });
 
   test('renders hero image when game has heroImage', () => {

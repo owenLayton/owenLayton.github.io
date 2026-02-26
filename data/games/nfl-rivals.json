@@ -1,20 +1,26 @@
 {
   "slug": "nfl-rivals",
   "title": "NFL Rivals",
+  "company": "Mythical Games",
   "category": "professional",
   "subtitle": "A fast-paced, arcade-style game featuring licensed NFL teams and players.",
   "description": [
-    "Focused on team management, card collecting, and blockchain-integrated assets (NFTs).",
-    "Contributed to backend services, live-ops tooling, and client-server integration."
+    "NFL Rivals was my first professional game project. I joined Mythical Games during pre-production and stayed with the title for over two years post-launch.",
+    "I worked closely with UX designers and UI artists, translating Figma wireframes into polished features across Inventory, Marketplace, Trading, Crafting, Training, Tutorials, Quests, Achievements, and Prime Integration.",
+    "The Inventory was a standout feature. It started as a single screen but became central to the game when I refactored it into reusable modules. The resulting framework was shared with two other studios.",
+    "With thousands of collectable items, performance mattered. I implemented pooling and load reduction to keep it at 30fps on low-end devices, and built a Linked List Layout Rebuilder to handle nested dropdown filtering and minimise expensive layout recalculations.",
+    "I authored flow through most of the games features using Playmaker FSMs.",
+    "On the backend, I built and extended features, debug tools, and admin tools with Node.js, PostgreSQL, Redis, and Handlebars.",
+    "I also built tween-based animations, extended the gameplay HUD, and iterated on editor tooling for marketing asset capture."
   ],
   "heroVideo": "https://www.youtube.com/watch?v=f9ixnt0oQuw",
   "gallery": [
-    "https://placekitten.com/600/340",
-    "https://placekitten.com/601/340",
-    "https://placekitten.com/602/340",
-    "https://placekitten.com/603/340"
+    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+1",
+    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+2",
+    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+3",
+    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+4"
   ],
   "role": "Software Engineer",
-  "tools": ["Unity", "C#", "Node.js"],
+  "tools": ["Unity", "C#", "Node.js", "PostgreSQL", "Redis", "Handlebars"],
   "platforms": ["iOS", "Android"]
 }

@@ -1,18 +1,25 @@
 {
   "slug": "pudgy-party",
   "title": "Pudgy Party",
+  "company": "Mythical Games",
   "category": "professional",
   "subtitle": "A fast-paced, arcade-style game featuring licensed NFL teams and players.",
   "description": [
-    "Focused on team management, card collecting, and blockchain-integrated assets (NFTs).",
-    "Contributed to backend services, live-ops tooling, and client-server integration."
+    "Pudgy Party was my second title at Mythical Games. I joined mid-development and spent my early time ramping up on an unfamiliar codebase.",
+    "I worked with Unity running as a headless distributed Linux server for multiplayer, and Beamable as a backend service layer.",
+    "I took ownership of the Shop and Battle Pass, improving the experience with intuitive auto-scroll mechanics and building a reveal animation for new Battle Pass seasons.",
+    "The shop had performance issues — I reduced load times by 50% by tracking down hidden UI elements that were performing unnecessary async work in the background.",
+    "I also led a large-scale refactor of the shop, restructuring the data architecture to support reusable content scheduling for live ops while closing security vulnerabilities that let purchase limits and item costs be bypassed.",
+    "A lot of my time went into bug fixing and stabilisation, particularly issues caused by the front and back end falling out of sync.",
+    "I integrated animations built in Unity Animator into game features, hooking up logic-dependent sequences and the Battle Pass reveal flow.",
+    "I was in the early stages of re-designing an existing system prior to the end of my time on this project."
   ],
-  "heroImage": "assets/pudgy-party/pudgy-party-logo.png",
+  "heroVideo": "https://www.youtube.com/watch?v=25WQCnAyyC4",
   "gallery": [
-    "https://placekitten.com/600/340",
-    "https://placekitten.com/601/340",
-    "https://placekitten.com/602/340",
-    "https://placekitten.com/603/340"
+    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+1",
+    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+2",
+    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+3",
+    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+4"
   ],
   "role": "Software Engineer",
   "tools": ["Unity", "C#"],

@@ -6,7 +6,7 @@
   "description": [ "A sorcerer's strongest spell is Black Hole, or so they say. Take on cutesy beasts in high-octane dodging and spellcasting action as you progress through levels.",
                    "This was created for my first Game Jam with NFL Rivals UX Designer Oliver Wreford and my longterm musical collaborator Gustav Erlangsen",
                    "I took sole responsibility for the engineering and build, as well as co-ordinating team efforts.",
-                   "For this project I built a screens system, an audio system, a tweening system, and a designer-friendly params system for levels and balancing",
+                   "For this project I built a screens system, an audio system, a tweening system, an input remapping system, and a designer-friendly params system for levels and balancing",
                    "Due to time constraints, our composer was required to use the level-building system to a strong success to choose progression and difficulty spikes.",
                    "Check it out on <a href='https://owenlayton.itch.io/sorcerers-folly'> my itch page</a>."
   ],

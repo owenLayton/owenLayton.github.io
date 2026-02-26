@@ -12,14 +12,6 @@ function isGif(url) {
   return typeof url === 'string' && url.split('?')[0].toLowerCase().endsWith('.gif');
 }
 
-function toEmbedUrl(url) {
-  if (typeof url !== 'string') return url;
-  var match;
-  match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
-  if (match) return 'https://www.youtube.com/embed/' + match[1];
-  return url;
-}
-
 function renderGamesGrid(container) {
   const s = STRINGS.games;
   const professionalGames = GAME_INDEX.filter(g => g.category === 'professional');
@@ -34,7 +26,10 @@ function renderGamesGrid(container) {
   const renderCards = (list) => list.map(game => `
     <a href="games.html?game=${game.slug}" class="card game-card">
       ${cardImage(game)}
-      <span class="game-category ${game.category}">${game.category}</span>
+      <div class="game-card-meta">
+        <span class="game-category ${game.category}">${game.category}</span>
+        ${game.company ? `<span class="game-company">${game.company}</span>` : ''}
+      </div>
       <h3>${game.title}</h3>
       <p>${game.subtitle.substring(0, 120)}</p>
     </a>
@@ -60,6 +55,7 @@ function renderGameDetail(game, container) {
     <div class="game-detail">
       <a href="games.html" class="back-link">${s.backLink}</a>
       <h1>${game.title}</h1>
+      ${game.company ? `<p class="game-company-detail">${game.company}</p>` : ''}
   `;
 
   if (game.heroGif) {
@@ -94,7 +90,15 @@ function renderGameDetail(game, container) {
     html += `
       <h2>${s.galleryTitle}</h2>
       <div class="game-gallery">
-        ${game.gallery.map(img => `<img src="${img}" alt="${s.screenshotAlt(game.title)}" class="${isGif(img) ? 'gif' : ''}">`).join('')}
+        ${game.gallery.map(item => {
+          const src = typeof item === 'string' ? item : item.src;
+          const caption = typeof item === 'object' && item.caption ? item.caption : '';
+          const gifClass = isGif(src) ? ' gif' : '';
+          return `<figure class="gallery-item">
+            <img src="${src}" alt="${s.screenshotAlt(game.title)}" class="${gifClass}">
+            ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+          </figure>`;
+        }).join('')}
       </div>
     `;
   }
@@ -103,7 +107,14 @@ function renderGameDetail(game, container) {
     html += `
       <h2>${s.videosTitle}</h2>
       <div class="game-videos">
-        ${game.videos.map(url => `<iframe src="${toEmbedUrl(url)}" allowfullscreen title="${s.videoTitle(game.title)}"></iframe>`).join('')}
+        ${game.videos.map(item => {
+          const src = typeof item === 'string' ? item : item.src;
+          const caption = typeof item === 'object' && item.caption ? item.caption : '';
+          return `<figure class="video-item">
+            <iframe src="${toEmbedUrl(src)}" allowfullscreen title="${s.videoTitle(game.title)}"></iframe>
+            ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+          </figure>`;
+        }).join('')}
       </div>
     `;
   }

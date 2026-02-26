@@ -436,6 +436,34 @@ p {
   max-width: 720px;
 }
 
+.bio-media {
+  margin: 25px 0;
+  max-width: 720px;
+}
+
+.bio-media-content {
+  max-width: 100%;
+  border-radius: var(--border-radius);
+  display: block;
+}
+
+.bio-media-content.gif {
+  max-height: none;
+}
+
+.bio-media .bio-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+}
+
+.bio-media figcaption {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
 .highlights-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -558,13 +586,27 @@ p {
 
 .game-card h3,
 .game-card p,
-.game-card .game-category {
+.game-card .game-category,
+.game-card .game-card-meta {
   padding-left: 22px;
   padding-right: 22px;
 }
 
-.game-card h3 {
+.game-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-top: 14px;
+}
+
+.game-company {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.game-card h3 {
+  padding-top: 4px;
 }
 
 .game-card p:last-child {
@@ -612,6 +654,14 @@ p {
 
 .game-detail .back-link:hover {
   color: var(--accent-pink);
+}
+
+.game-company-detail {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: -10px;
+  margin-bottom: 20px;
 }
 
 .game-hero {
@@ -705,6 +755,20 @@ ul.game-description li::marker {
 
 .game-gallery img:hover {
   transform: scale(1.03);
+}
+
+.gallery-item,
+.video-item {
+  margin: 0;
+}
+
+.gallery-item figcaption,
+.video-item figcaption {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
 }
 
 .game-videos {
