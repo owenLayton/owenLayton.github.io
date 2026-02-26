@@ -8,3 +8,12 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# Windows artifacts
+nul
+
+# Test coverage
+coverage/
+
+# Claude
+.claude/

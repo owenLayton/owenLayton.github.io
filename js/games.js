@@ -12,6 +12,14 @@ function isGif(url) {
   return typeof url === 'string' && url.split('?')[0].toLowerCase().endsWith('.gif');
 }
 
+function toEmbedUrl(url) {
+  if (typeof url !== 'string') return url;
+  var match;
+  match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+  if (match) return 'https://www.youtube.com/embed/' + match[1];
+  return url;
+}
+
 function renderGamesGrid(container) {
   const s = STRINGS.games;
   const professionalGames = GAME_INDEX.filter(g => g.category === 'professional');
@@ -60,7 +68,7 @@ function renderGameDetail(game, container) {
     html += `<img src="${game.heroImage}" alt="${game.title}" class="game-hero">`;
   }
   if (game.heroVideo) {
-    html += `<iframe src="${game.heroVideo}" class="game-hero-video" allowfullscreen title="${s.trailerTitle(game.title)}"></iframe>`;
+    html += `<iframe src="${toEmbedUrl(game.heroVideo)}" class="game-hero-video" allowfullscreen title="${s.trailerTitle(game.title)}"></iframe>`;
   }
 
   html += `<p class="game-subtitle">${game.subtitle}</p>`;
@@ -95,7 +103,7 @@ function renderGameDetail(game, container) {
     html += `
       <h2>${s.videosTitle}</h2>
       <div class="game-videos">
-        ${game.videos.map(url => `<iframe src="${url}" allowfullscreen title="${s.videoTitle(game.title)}"></iframe>`).join('')}
+        ${game.videos.map(url => `<iframe src="${toEmbedUrl(url)}" allowfullscreen title="${s.videoTitle(game.title)}"></iframe>`).join('')}
       </div>
     `;
   }
