@@ -28,6 +28,9 @@ function evalAsGlobal(code) {
 const stringsCode = fs.readFileSync(path.join(__dirname, '..', 'js', 'strings.js'), 'utf8');
 evalAsGlobal(stringsCode);
 
+// Stub browser APIs not implemented in jsdom
+window.scrollTo = function() {};
+
 // Load shared utilities into global scope
 const utilsCode = fs.readFileSync(path.join(__dirname, '..', 'js', 'utils.js'), 'utf8');
 evalAsGlobal(utilsCode);

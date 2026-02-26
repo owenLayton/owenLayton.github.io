@@ -120,7 +120,49 @@ function renderGameDetail(game, container) {
   }
 
   html += '</div>';
+
+  html += `
+    <div class="gallery-modal" id="gallery-modal">
+      <button class="gallery-modal-close" id="gallery-modal-close">&times;</button>
+      <img id="gallery-modal-img" src="" alt="">
+    </div>
+  `;
+
   container.innerHTML = html;
+  setupGalleryModal(container);
+}
+
+function setupGalleryModal(container) {
+  const modal = container.querySelector('#gallery-modal');
+  if (!modal) return;
+
+  const modalImg = modal.querySelector('#gallery-modal-img');
+  const closeBtn = modal.querySelector('#gallery-modal-close');
+
+  container.querySelectorAll('.game-gallery img').forEach(function (img) {
+    img.addEventListener('click', function () {
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
+      modal.classList.add('open');
+    });
+  });
+
+  closeBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    modal.classList.remove('open');
+  });
+
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) {
+      modal.classList.remove('open');
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('open')) {
+      modal.classList.remove('open');
+    }
+  });
 }
 
 async function initGamesPage() {

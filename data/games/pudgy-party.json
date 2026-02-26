@@ -16,10 +16,8 @@
   ],
   "heroVideo": "https://www.youtube.com/watch?v=25WQCnAyyC4",
   "gallery": [
-    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+1",
-    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+2",
-    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+3",
-    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+4"
+    "assets/pudgy-party/shop.png",
+    "assets/pudgy-party/battlepass.png"
   ],
   "role": "Software Engineer",
   "tools": ["Unity", "C#"],

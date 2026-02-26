@@ -2,6 +2,12 @@
    Shared Utilities
    ======================================== */
 
+/* Scroll to top on every page load / refresh */
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 async function fetchJSON(url) {
   const resp = await fetch(url);
   if (!resp.ok) throw new Error('Failed to load ' + url);

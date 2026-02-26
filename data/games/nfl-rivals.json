@@ -15,10 +15,8 @@
   ],
   "heroVideo": "https://www.youtube.com/watch?v=f9ixnt0oQuw",
   "gallery": [
-    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+1",
-    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+2",
-    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+3",
-    "https://placehold.co/600x340/1a0533/b537f2?text=Screenshot+4"
+    "assets/nfl-rivals/inventory.png",
+    "assets/nfl-rivals/player-card-screen.png"
   ],
   "role": "Software Engineer",
   "tools": ["Unity", "C#", "Node.js", "PostgreSQL", "Redis", "Handlebars"],
