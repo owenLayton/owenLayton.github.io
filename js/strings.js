@@ -120,7 +120,7 @@ const STRINGS = {
     restart: 'Restart',
     newAdventure: 'New Adventure',
     chooseAdventureBtn: 'Choose Adventure',
-    welcomeGreeting: 'Welcome, adventurer! Choose your path, or let fate decide...',
+    welcomeGreeting: 'Welcome, adventurer! Choose your path, or let fate decide...\n I\'m AI generated for now, expect updates to come soon.',
     randomAdventureBtn: 'Surprise Me!',
   },
 };
