@@ -37,8 +37,13 @@
         </div>
       `).join('');
 
-      const bioHtml = s.bio.map(item => {
-        if (typeof item === 'string') return `<p>${item}</p>`;
+      const bioHtml = '<div class="bio-card">' + s.bio.map(item => {
+        if (typeof item === 'string')
+        {
+          if (!item.trim())
+            return `<div class="bio-spacer"></div>`;
+          return `<p>${item}</p>`;
+        }
         if (item.type === 'image' || item.type === 'gif') {
           return `<figure class="bio-media">
             <img src="${item.src}" alt="${item.alt || ''}" class="bio-media-content${item.type === 'gif' ? ' gif' : ''}">
@@ -52,7 +57,7 @@
           </figure>`;
         }
         return '';
-      }).join('');
+      }).join('') + '</div>';
 
       document.getElementById('about-page').innerHTML = `
         <!-- Hero / Intro -->

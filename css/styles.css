@@ -7,6 +7,7 @@
   --bg-primary: #0d0221;
   --bg-secondary: #150535;
   --bg-card: #1a0a3e;
+  --bg-bio-card: #00000027;
   --text-primary: #e8e0f0;
   --text-secondary: #f0eaf7;
   --accent-pink: #ff2a6d;
@@ -434,6 +435,15 @@ p {
   font-size: 1.05rem;
   line-height: 1.8;
   max-width: 720px;
+}
+
+.bio-spacer {
+  height: 1rem;
+}
+
+.bio-card {
+  /* width: fit-content; */
+  background: var(--bg-bio-card);
 }
 
 .bio-media {

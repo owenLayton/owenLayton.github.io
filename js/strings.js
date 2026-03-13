@@ -34,20 +34,26 @@ const STRINGS = {
 
     sectionTitle: 'About Me',
     bio: [
-      'I\'m a game developer with a passion for building interactive experiences that players remember. From concept to ship, I love the entire process of bringing ideas to life — designing systems, solving tricky technical problems, and polishing until it feels just right.',
-      { type: 'image', src: 'https://placehold.co/720x400/1a0533/b537f2?text=Example+Image', alt: 'Example image', caption: 'An example image in the bio section' },
-      'I\'ve worked across professional studios and personal projects, gaining experience with a range of engines, tools, and team sizes. Whether it\'s gameplay programming, tools development, or prototyping something weird and experimental, I\'m happiest when I\'m building.',
-      { type: 'gif', src: 'https://placehold.co/720x400/1a0533/05d9e8?text=Example+GIF.gif', alt: 'Example gif', caption: 'An example GIF in the bio section' },
-      'Outside of game development, I enjoy tinkering with creative tech projects, exploring new frameworks, and finding the fun in every technical challenge. I\'m always open to interesting collaborations and new opportunities.',
-      { type: 'video', src: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', alt: 'Example video', caption: 'An example video in the bio section' },
+      'I like to make games.',
+      '\n','\n','\n','\n','\n','\n','\n','\n',
+      '\n','\n','\n','\n','\n','\n','\n','\n',
+      'Oh, you wanted more?',
+      'I\'ve worked on two shipped mobile titles as a Unity Developer, taking responsibility in small teams to deliver the best possible products, leaning deep into UI systems and optimisation. While I prefer frontend work, full-stack is my playground and I am completely comfortable with and capable of writing end-to-end features, architecting key areas of the game, and working cross-team with all levels of designers and artists.',
+      'I have a deep understanding of monetisation in freemium games, building retention features, and ensuring high quality of life for the players.',
+      'When I have a few days available, I also like to design new ideas for games or when I really have time (and am not burned out enough to be creatively bankrupt) I like to participate in game jams! When I am burned out, I like to think about participating in game jams.',
+      'Among all the other buzzwords you undoubtedly want to read here, I prefer to write in C#, and I\'m more than capable on Javascript and Node.js, though honestly I prefer statically typed languages and think Typescript would be a suitable move for me. I\'m also learning C++ and Unreal Engine in my own time, because I want to work more on console and PC.',
+      'Outside of work, I like to play games. Board games such as Heat, where I hold the personal record among my friends of "coming third one time", or Catan where I have been told "Please stop, you\'ve already won".',
+      'I enjoy card games such as Pokémon TCG, where I have been told "I love your company but I hate your decks", and my all-time favourite Star Realms, where I am oft-quoted saying "Please stop, you\'ve already won".',
+      'I also enjoy wargaming, from 4X games such as Civilisation (V for streamlined experience, 6 for micromanagement and Switch gaming on the move), to tabletop games like Warhammer 40,000, where I represent the 10,000 Bananas, or Custodes as they prefer to be called. While I\'m still learning to be better at 40k, I often get helpful comments from the staff at my local gaming store, including "Please stop, it\'s closing time and you\'ve already lost".',
+      'If you crack the code I have hidden on this website, please contact me with a job offer (Hint, it has something to do with how I like making games). Now I must bid you adieu, I have to go look for that damn fourth chaos emerald.' 
     ],
 
     glanceTitle: 'At a Glance',
     highlights: [
       { title: 'Engines &amp; Tools', text: 'Unity' },
       { title: 'Languages', text: 'C#, JavaScript, Java, C++' },
-      { title: 'Disciplines', text: 'Gameplay programming, systems design, tools development, prototyping' },
-      { title: 'Interests', text: 'Creative tech, procedural generation, interactive storytelling' },
+      { title: 'Disciplines', text: 'UI programming, systems design, tools development, prototyping' },
+      { title: 'Interests', text: 'Yes' },
     ],
 
     downloadCV: '&#11015; Download CV',
