@@ -16,7 +16,7 @@
     /* ---------- Post-processing toggles ---------- */
     /* Set to true/false to enable/disable effects   */
     crtScanlines: true,
-    filmBurn: true,
+    filmBurn: false,
   };
 
   if (window.innerWidth <= 768) {
